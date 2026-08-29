@@ -162,7 +162,14 @@ def query_xai(prompt: str, model: str) -> dict:
             tools=[{"type": "web_search"}],
             input=prompt,
         )
-        search_used = bool(getattr(resp, "server_side_tool_usage", None))
+        # "server_side_tool_usage" (from xAI's docs) doesn't reliably
+        # show up on this SDK response even when search clearly ran
+        # (citations present in output) - checked in testing 2026-08-29.
+        # Mirror OpenAI's detection instead, since xAI's Responses API is
+        # explicitly modeled on it: look for a web_search_call output item.
+        search_used = any(
+            getattr(item, "type", None) == "web_search_call" for item in resp.output
+        )
         text = resp.output_text
     except Exception:
         search_used = None

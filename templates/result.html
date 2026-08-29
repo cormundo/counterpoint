@@ -50,7 +50,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-{{ num_columns }} gap-5">
     {% for r in results %}
-    <div class="bg-white border border-gray-400 rounded-lg shadow p-5 flex flex-col min-h-[220px]">
+    <div class="bg-white border border-gray-400 rounded-lg shadow p-5 flex flex-col min-h-[220px] min-w-0">
       <div class="text-xs font-mono text-gray-500 border-b border-gray-300 pb-2 mb-3">
         <span class="block font-sans font-bold text-gray-900 text-base mb-0.5">{{ r.provider }}</span>
         <span>{{ r.model or "—" }}</span>
@@ -74,7 +74,7 @@
         <div class="mt-2 text-gray-400">{{ r.retrieved_at }}</div>
       </div>
       {% if r.status == "ok" %}
-        <div class="text-sm text-gray-800 whitespace-pre-wrap flex-1">{{ r.response }}</div>
+        <div class="text-sm text-gray-800 whitespace-pre-wrap break-words flex-1">{{ r.response }}</div>
       {% elif r.status == "skipped_no_key" %}
         <div class="text-sm text-gray-400 italic">No API key configured for this provider yet.</div>
       {% else %}
@@ -98,15 +98,15 @@
     <div class="space-y-5">
       <div>
         <h3 class="text-xs font-mono uppercase tracking-wide text-gray-500 mb-1">What's known</h3>
-        <p class="text-sm text-gray-800 leading-relaxed">{{ framing_analysis.knowledge_differences }}</p>
+        <p class="text-sm text-gray-800 leading-relaxed break-words">{{ framing_analysis.knowledge_differences }}</p>
       </div>
       <div>
         <h3 class="text-xs font-mono uppercase tracking-wide text-gray-500 mb-1">Framing &amp; emphasis</h3>
-        <p class="text-sm text-gray-800 leading-relaxed">{{ framing_analysis.framing_differences }}</p>
+        <p class="text-sm text-gray-800 leading-relaxed break-words">{{ framing_analysis.framing_differences }}</p>
       </div>
       <div>
         <h3 class="text-xs font-mono uppercase tracking-wide text-gray-500 mb-1">Confidence &amp; hedging</h3>
-        <p class="text-sm text-gray-800 leading-relaxed">{{ framing_analysis.confidence_differences }}</p>
+        <p class="text-sm text-gray-800 leading-relaxed break-words">{{ framing_analysis.confidence_differences }}</p>
       </div>
     </div>
   </div>

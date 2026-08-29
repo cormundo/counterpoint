@@ -103,17 +103,29 @@ def analyze(results_file: Path):
 
     from anthropic import Anthropic
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-    resp = client.messages.create(
-        model=cfg["model"],
-        max_tokens=4000,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    text = "".join(block.text for block in resp.content if block.type == "text")
 
-    try:
-        analysis = parse_json_response(text)
-    except json.JSONDecodeError as e:
-        print(f"Could not parse analysis JSON: {e}\nRaw output:\n{text}")
+    # The model occasionally emits a stray character that breaks strict
+    # JSON parsing despite the instructions - it's a formatting slip, not
+    # a content problem, and a re-ask reliably produces valid JSON. Retry
+    # a couple of times before giving up on what's usually a good analysis.
+    analysis = None
+    last_error = None
+    for attempt in range(3):
+        resp = client.messages.create(
+            model=cfg["model"],
+            max_tokens=4000,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = "".join(block.text for block in resp.content if block.type == "text")
+        try:
+            analysis = parse_json_response(text)
+            break
+        except json.JSONDecodeError as e:
+            last_error = e
+            print(f"Attempt {attempt + 1}: could not parse analysis JSON ({e}), retrying...")
+
+    if analysis is None:
+        print(f"Could not parse analysis JSON after 3 attempts: {last_error}\nRaw output:\n{text}")
         return data
 
     data["framing_analysis"] = {
