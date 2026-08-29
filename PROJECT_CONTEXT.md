@@ -121,94 +121,184 @@ record).
 
 ## 3. What exists in this repo right now
 
-- `query_models.py` — queries all five providers with one prompt,
-  writes a JSON result file with model/version/timestamp/response per
-  provider, plus freshness fields (`search_used`, `search_capable`,
-  `knowledge_cutoff`). Gracefully skips providers with no API key
-  configured (`status: skipped_no_key`), retries transient failures
-  (2 retries, exponential backoff) before logging `status: error`, and
-  falls back to a plain completion if a provider's search-enabled call
-  fails, rather than losing that provider's response entirely.
-- `config/models.yaml` — model IDs and per-provider freshness metadata,
-  pulled out of `query_models.py` so they're one edit away instead of
-  buried in code. IDs were pulled from provider docs on 2026-08-29 —
-  see the warning at the top of that file before trusting them for
-  anything important.
-- `prompts/*.yaml` — one prompt per file, named by date + slug. This
-  is the versioning mechanism referenced above.
-- `results/*.json` — one file per run, the reproducible record.
-- `render_results.py` + `templates/result.html` — renders a results
-  JSON file into a static HTML side-by-side comparison page, including
-  the freshness badges per response and the framing analysis section
-  (see below) when one is present.
-- `analyze_framing.py` — a separate pass, run between `query_models.py`
-  and `render_results.py`, that describes how the raw responses differ
-  on facts/framing/hedging (comparison dimensions 1–3 below) without
-  ranking them, and writes the result into the same results JSON as a
-  `framing_analysis` block. It never edits the raw responses. Currently
-  uses Anthropic as the analyzer model — see the "known open tension"
-  note in that file's docstring about the fairness of using one of the
-  five compared providers as the analyzer; this is a v1 choice made
-  because Anthropic was the verified-working provider, not a
-  considered decision that it should stay that way.
-- `docs/` — generated output (named `docs/`, not `site/`, so GitHub
-  Pages can serve it directly from the branch), includes an
-  `index.html` listing all rendered comparisons.
+| Path | Purpose |
+|---|---|
+| `query_models.py` | Queries all five providers, writes `results/<id>.json` with model/version/timestamp/response + freshness fields (`search_used`, `search_capable`, `knowledge_cutoff`) per provider. Skips missing keys gracefully, retries transient failures (2x, exponential backoff), and falls back to a plain completion if a provider's search-enabled call fails rather than losing that provider's response entirely. |
+| `config/models.yaml` | Model IDs + freshness metadata, pulled out of the Python so they're one edit away. IDs were pulled from provider docs on 2026-08-29 — **re-verify before trusting for anything important**, see the warning at the top of that file. |
+| `analyze_framing.py` | A separate pass (run between `query_models.py` and `render_results.py`) that describes how raw responses diverge on facts/framing/hedging **without ranking them**, and writes a `framing_analysis` block into the same results JSON. Never edits the raw responses. Retries automatically if the analyzer model returns malformed JSON. Currently uses **Anthropic** as the analyzer — see the "known open tension" note in that file's docstring about the fairness of using one of the five compared providers as the judge; a v1 choice, not a considered decision that it should stay that way. |
+| `render_results.py` + `templates/result.html` | Renders results JSON into the styled comparison page, including freshness badges and the framing analysis section when present. |
+| `prompts/*.yaml`, `results/*.json`, `docs/` | The versioning/record/output layers — see README's table for detail. |
 
-**Verification status (as of 2026-08-29):** OpenAI, Anthropic, and
-Google have all been exercised against live API keys and work end to
-end — including live web search triggering correctly on all three and
-returning real, current answers about an event outside training data
-(see `results/2026-08-29_example.json`), and the framing analysis pass
-correctly described real divergences between them (different casualty
-figures, different geographic emphasis, different hedging on the
-event's scientific classification) without ranking any of them. xAI's
-search-enabled code path is implemented from current provider docs but
-has never been run against a real key. DeepSeek has no search
-capability as of the docs checked on that date, and hasn't been
-run against a real key either.
+**Verification status (as of 2026-08-29):** all five providers —
+OpenAI, Anthropic, Google, xAI, DeepSeek — have been exercised against
+live API keys and work end to end, across three published comparisons
+(Nepal glacial flood, a Turkish band manager's arrest, a Lake
+Ontario/"Lake America" renaming dispute). Live web search triggers
+correctly on the four search-capable providers, and the framing
+analysis pass has correctly described real divergences without ranking
+any of them — including, on the Lake America story, **DeepSeek flatly
+denying the event happened at all** ("a dead internet meme") while the
+other four treated it as a real, ongoing executive order. That's a
+genuinely useful signal this tool is designed to surface, not a bug.
 
 The visual design in `templates/result.html` and `docs/index.html` was
-checked against a **raw fetch of consenseai.org's actual HTML** on
-2026-08-29 (not a guess this time). Contrary to the original dark
-navy/teal guess, the real site runs on plain Tailwind CSS with the
-default grayscale palette — `bg-gray-800`/`bg-gray-900` dark sections,
-`bg-gray-200` body, no custom brand color anywhere — plus an italic
-"Impact"/Arial Black wordmark treatment. Both templates now match that.
-If the live site's design changes, re-check against it again rather
-than assuming this still matches.
+checked against a **raw fetch of consenseai.org's actual HTML**, not
+guessed: plain Tailwind CSS, default grayscale palette (no dark
+navy/teal, no custom brand color), italic "Impact"/Arial Black
+wordmark. If the live site's design changes, re-check against it again
+rather than assuming this still matches.
+
+Deployment: the repo is **public** at github.com/cormundo/counterpoint
+with GitHub Pages serving `docs/` from `master`. Re-render and push to
+update the live site.
 
 ---
 
-## 4. What to build next, roughly in priority order
+## 4. What to build next
 
 Done as of 2026-08-29: visual design matched to the real site,
-recency/freshness tracking, model IDs moved to `config/models.yaml`,
-retry handling, a v1 framing/tone analysis layer, and deployment (the
-repo is public at github.com/cormundo/counterpoint with GitHub Pages
-serving `docs/` from the `master` branch — re-run `render_results.py`
-and push whenever you want the published site to reflect a new
-comparison). See section 3 above for verification status on each.
-Remaining:
+recency/freshness tracking (all 5 providers verified), model IDs moved
+to `config/models.yaml`, retry handling, a v1 framing/tone analysis
+layer, and public deployment via GitHub Pages. See §3 for verification
+detail. Everything below is genuinely open — roughly grouped by theme,
+not strict priority, since several of these should be discussed as a
+team rather than decided solo.
 
-1. **Get real API keys for xAI and DeepSeek and actually run them.**
-   xAI's search-enabled code path is implemented from current provider
-   docs but untested — could fall back to a plain completion (harmless)
-   or log a `status: error` (also harmless) once a real key is in
-   place. DeepSeek just needs a key, no search path to worry about.
-2. **Revisit the framing-analysis design, not just its plumbing.**
-   The v1 in `analyze_framing.py` works and stays descriptive rather
-   than evaluative in testing, but two things are worth a deliberate
-   decision rather than staying as v1 defaults: (a) it currently uses
-   Anthropic to analyze all five responses including Anthropic's own —
-   decide whether that's acceptable long-term or whether the analyzer
-   should be a separate/rotating/non-competing model; (b) it's a single
-   prompt asking for prose description — consider whether a more
-   structured diff (e.g. per-fact comparison table) would serve readers
-   better than paragraphs, without turning into a scored rubric.
-3. **MCP endpoint.** Explicitly a longer-term goal per the
-   organization's stated plans, not immediate — don't over-invest here
-   until the core comparison and interface are solid.
+### 4.1 A real gap to fix soon: re-runs overwrite history
+
+`results/<prompt_id>.json` gets **overwritten** every time you re-run
+that prompt file — there's no history. For a one-off comparison that's
+fine; for a story like the three currently published, which are all
+*still unfolding* (casualty counts climbing, an executive order that
+could be litigated, an arrest that could be resolved), you'd want to
+re-run periodically and see how each model's answer changes over time.
+Right now that history is silently lost. This directly contradicts the
+project's own reproducibility principle in §2 ("don't build anything
+that would make a past run unreproducible"). Fix is straightforward:
+either suffix result filenames with a run timestamp, or store a list of
+runs per `prompt_id` in one file. Worth doing before publishing more
+comparisons of evolving stories.
+
+### 4.2 Sourcing prompts from a news feed, not just hand-typing them
+
+The ask: instead of Corey (or another editor) hand-writing every prompt,
+pull candidate stories from an external feed — RSS, a news API, GDELT,
+or a curated list of outlets spanning regions/languages — so the tool
+can keep up with the news cycle instead of waiting on manual curation.
+
+**The design tension worth being explicit about:** *which stories get
+compared* is itself an editorial act, same as the framing-analysis
+"who judges the judge" tension in §3. A feed that's fully automated —
+auto-generate prompt wording from a headline, auto-publish — imports
+whatever bias or gaps exist in that feed's source selection, and
+removes the human accountability the `editor:` field currently
+represents. It also opens a manipulation surface: a bad actor gaming a
+trending-topics feed could seed adversarial prompts.
+
+**Recommended shape, not yet built:** a `fetch_candidates.py` script
+that pulls headlines from a diverse set of sources and writes them as
+*draft* prompt files (e.g. to `prompts/_drafts/`) — never straight into
+the published `prompts/` directory. A human still writes the final
+prompt wording and claims editorial credit before a comparison runs.
+This keeps the feed as a triage/discovery aid, not a replacement for
+editorial judgment. Bias toward stories where framing plausibly
+diverges (contested political events, authoritarian-adjacent stories,
+cross-border disputes) rather than pure "trending" — that's closer to
+the org's actual mission than a generic news firehose.
+
+If this works well, the natural extension is a scheduled job (e.g. a
+GitHub Actions cron) that re-runs approved/recurring prompts on a
+cadence — but that needs the run-history fix above first, and a hard
+spend cap (see 4.4) before it's safe to leave unattended.
+
+### 4.3 Robustness
+
+- **No automated tests exist.** Nothing catches a provider SDK's
+  response shape changing except a real run failing partway. Cheap
+  wins: unit tests for `parse_json_response`'s edge cases, for
+  `config/models.yaml` loading, and a "smoke test" that checks each
+  provider function's structure without spending real tokens.
+- **Dependencies are pinned loosely** (`>=` everywhere in
+  `requirements.txt`). A future major SDK release could silently break
+  a provider function the way `google-generativeai` → `google-genai`
+  already did once this build cycle. Consider pinning exact versions
+  once the provider integrations stabilize.
+- **A lightweight CI check** (GitHub Actions, no API keys needed) that
+  just verifies the code imports cleanly and `config/models.yaml`
+  parses would catch a broken commit before it reaches `master`.
+- **Schema-drift error messages:** right now a provider SDK shape
+  change just surfaces as a generic exception caught by the
+  search-fallback or retry logic — functional, but the real cause gets
+  buried. Worth adding a narrower except clause that specifically flags
+  "provider response shape may have changed" so it's diagnosable at a
+  glance instead of by reading a stack trace.
+
+### 4.4 Cost
+
+- **Provider batch APIs** (Anthropic's Batches API, OpenAI's Batch API)
+  are typically ~50% cheaper than synchronous calls and fit this use
+  case well — nobody's waiting live on a Counterpoint run the way a
+  chat user waits on a reply. Worth adopting once runs happen often
+  enough to matter.
+- **Cap search tool usage on every provider, not just Anthropic.**
+  Anthropic's `web_search` tool is already capped at `max_uses: 3`;
+  OpenAI/Google/xAI's search tools aren't currently capped, which is a
+  real (if probably small) runaway-cost exposure once this runs
+  unattended.
+- **A cheaper analyzer model for `analyze_framing.py`** is worth
+  testing (e.g. Haiku 4.5 instead of Sonnet 5) — but treat it as a
+  genuine tradeoff to evaluate, not a free win; a weaker model may
+  produce shallower framing analysis, and that section's whole value is
+  being accurate and specific.
+- **A spend cap is a prerequisite for any automation** (4.2's
+  scheduled runs, or just more frequent manual ones) — this is a
+  volunteer nonprofit with under $10k in dev spend to date; automated
+  or scheduled runs need a hard ceiling before they run unattended.
+
+### 4.5 Other models worth adding
+
+The org's own selection criteria (§2): different companies, different
+training approaches, different national/regulatory contexts. Candidates
+that would extend that range, not just add another US company:
+
+- **Mistral (France/EU)** — the current five have no EU-regulated
+  (AI Act) data point at all.
+- **Alibaba Qwen (China)** — DeepSeek is currently the only Chinese
+  lab represented, which risks flattening "Chinese AI" into one data
+  point. That's in tension with the project's own anti-single-narrative
+  premise.
+- **Meta Llama (US, open-weight)** — a different distribution model
+  from the other four US/China labs, and resonates with the org's own
+  open-source commitment.
+- **Cohere (Canada)** — another distinct jurisdiction, enterprise-
+  focused.
+
+Worth a real discussion before adding: more columns means more API
+cost per run, a harder "equal visual weight" layout as columns grow
+past five, and a longer/costlier framing-analysis prompt (it processes
+all raw responses in one context). **Perplexity** came up as a
+different-category option — it wraps other companies' models with
+retrieval rather than training its own, so it doesn't cleanly fit "which
+company built the model"; worth a separate conversation about whether
+it belongs at all rather than folding it in by default.
+
+### 4.6 Smaller things worth doing
+
+- **No a11y pass yet** — this is meant to be a public credibility tool;
+  worth a basic screen-reader/contrast check before wide release.
+- **Everything's English-only so far.** The "different national/
+  regulatory context" premise would be stronger with non-English
+  prompts too, especially for stories where the framing gap is likely
+  to track language/audience, not just company.
+- **Revisit the framing-analysis design** (not just its plumbing): (a)
+  Anthropic currently judges all five responses including its own —
+  decide if that's acceptable long-term or if the analyzer should
+  rotate/be non-competing; (b) it's single-prompt prose — a more
+  structured per-fact diff might serve readers better than paragraphs,
+  without turning into a scored rubric.
+- **MCP endpoint** — still explicitly longer-term per the org's stated
+  plans; don't over-invest until the core comparison/interface and the
+  items above are solid.
 
 ## 5. Constraints to keep in mind throughout
 

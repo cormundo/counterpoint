@@ -51,7 +51,7 @@ Address exactly three things, each as a plain-prose paragraph (2-5 sentences), b
 
 If the responses are largely similar on a dimension, say so plainly rather than inventing a difference.
 
-Respond with ONLY a JSON object with exactly these three string keys: knowledge_differences, framing_differences, confidence_differences. No other text, no markdown code fence.
+Respond with ONLY a JSON object with exactly these three string keys: knowledge_differences, framing_differences, confidence_differences. No other text, no markdown code fence. Since this must be valid JSON: if you quote a word or phrase from one of the responses, use single quotes ('like this') rather than double quotes around it - a literal double-quote character inside a JSON string breaks parsing.
 
 PROMPT GIVEN TO ALL FIVE MODELS:
 {prompt_text}

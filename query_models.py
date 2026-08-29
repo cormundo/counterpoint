@@ -95,7 +95,7 @@ def query_anthropic(prompt: str, model: str) -> dict:
     try:
         resp = client.messages.create(
             model=model,
-            max_tokens=1000,
+            max_tokens=4000,
             messages=[{"role": "user", "content": prompt}],
             tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}],
         )
@@ -105,7 +105,7 @@ def query_anthropic(prompt: str, model: str) -> dict:
         search_used = None
         resp = client.messages.create(
             model=model,
-            max_tokens=1000,
+            max_tokens=4000,
             messages=[{"role": "user", "content": prompt}],
         )
         text = resp.content[0].text
