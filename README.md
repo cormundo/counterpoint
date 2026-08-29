@@ -47,7 +47,7 @@ python render_results.py results/2026-08-29_example.json
 ```
 
 Check `results/2026-08-29_example.json` for the raw data, or open
-`site/2026-08-29_example.html` in a browser for the rendered
+`docs/2026-08-29_example.html` in a browser for the rendered
 comparison (the analysis step is optional — skip it and
 `render_results.py` just won't show the "How the responses differ"
 section).
@@ -96,27 +96,26 @@ section).
 ## Interface (basic)
 
 `render_results.py` turns a results JSON file into a static HTML
-comparison page, styled loosely after consenseai.org's dark,
-mission-driven register — I could only read the live site as text, not
-its actual CSS, so treat the palette/fonts here as a placeholder to
-check against the real site rather than an exact match.
+comparison page, styled to match the real consenseai.org site (see
+design notes below). Output goes in `docs/` rather than `site/` so it
+can be served directly by GitHub Pages.
 
 ```
 pip install jinja2  # already in requirements.txt
 python render_results.py results/2026-08-29_example.json
 ```
 
-Open `site/2026-08-29_example.html` in a browser. `site/index.html`
+Open `docs/2026-08-29_example.html` in a browser. `docs/index.html`
 lists every rendered comparison.
 
 Design notes for whoever picks this up next:
-- The visual design was re-checked against the live consenseai.org
-  HTML (2026-08-29) instead of guessed. The real site runs on plain
-  Tailwind CSS with the default grayscale palette (no dark navy/teal,
-  no custom brand color) and an italic "Impact"/Arial Black wordmark
-  treatment — `templates/result.html` and the generated `site/index.html`
-  now match that: Tailwind via CDN, `bg-gray-800` header, `bg-gray-200`
-  body, `bg-gray-900` footer, no accent color anywhere.
+- The visual design was checked against the live consenseai.org HTML
+  (2026-08-29), not guessed. The real site runs on plain Tailwind CSS
+  with the default grayscale palette (no dark navy/teal, no custom
+  brand color) and an italic "Impact"/Arial Black wordmark treatment —
+  `templates/result.html` and the generated `docs/index.html` match
+  that: Tailwind via CDN, `bg-gray-800` header, `bg-gray-200` body,
+  `bg-gray-900` footer, no accent color anywhere.
 - The "spine" (the connecting line from the prompt into all five
   columns) is deliberate: equal length and weight into every column,
   no column emphasized, matching the "we don't rank" principle. Keep

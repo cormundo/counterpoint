@@ -151,6 +151,9 @@ record).
   five compared providers as the analyzer; this is a v1 choice made
   because Anthropic was the verified-working provider, not a
   considered decision that it should stay that way.
+- `docs/` — generated output (named `docs/`, not `site/`, so GitHub
+  Pages can serve it directly from the branch), includes an
+  `index.html` listing all rendered comparisons.
 
 **Verification status (as of 2026-08-29):** OpenAI, Anthropic, and
 Google have all been exercised against live API keys and work end to
@@ -165,7 +168,7 @@ has never been run against a real key. DeepSeek has no search
 capability as of the docs checked on that date, and hasn't been
 run against a real key either.
 
-The visual design in `templates/result.html` and `site/index.html` was
+The visual design in `templates/result.html` and `docs/index.html` was
 checked against a **raw fetch of consenseai.org's actual HTML** on
 2026-08-29 (not a guess this time). Contrary to the original dark
 navy/teal guess, the real site runs on plain Tailwind CSS with the
@@ -179,10 +182,13 @@ than assuming this still matches.
 
 ## 4. What to build next, roughly in priority order
 
-Items 1–5 from the original plan are done as of 2026-08-29 (visual
-design matched to the real site, recency/freshness tracking, model IDs
-moved to `config/models.yaml`, retry handling, a v1 framing/tone
-analysis layer) — see section 3 above for verification status on each.
+Done as of 2026-08-29: visual design matched to the real site,
+recency/freshness tracking, model IDs moved to `config/models.yaml`,
+retry handling, a v1 framing/tone analysis layer, and deployment (the
+repo is public at github.com/cormundo/counterpoint with GitHub Pages
+serving `docs/` from the `master` branch — re-run `render_results.py`
+and push whenever you want the published site to reflect a new
+comparison). See section 3 above for verification status on each.
 Remaining:
 
 1. **Get real API keys for xAI and DeepSeek and actually run them.**
@@ -200,11 +206,7 @@ Remaining:
    prompt asking for prose description — consider whether a more
    structured diff (e.g. per-fact comparison table) would serve readers
    better than paragraphs, without turning into a scored rubric.
-3. **Deployment.** Currently local-only static HTML — git isn't even
-   installed on the machine this was built on yet. Once git/GitHub are
-   set up, a GitHub Pages deploy of `site/` is the natural next step
-   toward the "public interface" goal.
-4. **MCP endpoint.** Explicitly a longer-term goal per the
+3. **MCP endpoint.** Explicitly a longer-term goal per the
    organization's stated plans, not immediate — don't over-invest here
    until the core comparison and interface are solid.
 

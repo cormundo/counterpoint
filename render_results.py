@@ -14,7 +14,7 @@ from jinja2 import Environment, FileSystemLoader
 
 BASE_DIR = Path(__file__).parent
 TEMPLATES_DIR = BASE_DIR / "templates"
-SITE_DIR = BASE_DIR / "site"
+SITE_DIR = BASE_DIR / "docs"
 SITE_DIR.mkdir(exist_ok=True)
 
 
