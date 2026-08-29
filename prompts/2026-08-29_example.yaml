@@ -1,0 +1,9 @@
+id: 2026-08-29_example
+editor: corey
+prompt: >
+  Summarize what happened in the late august 2026 nepal glacial flood and explain the current
+  state of the situation as of today.
+notes: >
+  Replace this with an actual editor-written prompt about a real event.
+  Keep one prompt per file, named by date + short slug, so every
+  comparison run is tied to a specific, inspectable prompt.

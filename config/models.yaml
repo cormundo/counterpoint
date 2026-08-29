@@ -1,0 +1,46 @@
+# Model IDs and metadata for each provider Counterpoint queries.
+#
+# This exists so model IDs live in one place instead of being buried in
+# query_models.py — providers release new model versions often, and this
+# file should be the only place you need to edit when that happens.
+#
+# IMPORTANT — verify before trusting: the model IDs below were pulled
+# from each provider's live docs on 2026-08-29 (see PROJECT_CONTEXT.md
+# for why that matters). Only the Anthropic entry has actually been
+# exercised against the real API. Check each provider's model list
+# before an important/public run, especially if a call starts failing
+# with a "model not found" style error.
+#
+# knowledge_cutoff is left blank (null) wherever the provider's training
+# data cutoff wasn't confirmed from documentation — don't guess a date
+# here, an empty value is more honest than a wrong one. Fill it in once
+# you've confirmed it from the provider's own model card / release notes.
+
+providers:
+  openai:
+    model: gpt-5.6
+    supports_search: true
+    knowledge_cutoff: null
+
+  anthropic:
+    model: claude-sonnet-5
+    supports_search: true
+    knowledge_cutoff: null
+
+  google:
+    model: gemini-3.7-flash
+    supports_search: true
+    knowledge_cutoff: null
+
+  xai:
+    model: grok-4.6
+    supports_search: true
+    knowledge_cutoff: null
+
+  deepseek:
+    model: deepseek-chat
+    # DeepSeek's API has no live web search / retrieval tool as of the
+    # docs checked 2026-08-29 — every DeepSeek response is training-data
+    # only. Re-check this if that changes.
+    supports_search: false
+    knowledge_cutoff: null

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Counterpoint — {{ prompt_id }}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* Matches the wordmark treatment on consenseai.org: an italic
+     display font with a system-font fallback, not a webfont import
+     (their own @import for "Impact" as a Google Font doesn't resolve
+     to anything real - the actual OS "Impact"/Arial Black fonts are
+     what render it, so we mirror that instead of loading a font). */
+  .impact-italic {
+    font-family: Impact, 'Arial Black', sans-serif;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body class="bg-gray-200 font-sans text-gray-800">
+
+<header class="bg-gray-800 text-white py-4">
+  <div class="container mx-auto px-6 flex flex-wrap justify-between items-center gap-2">
+    <div>
+      <div class="text-2xl font-bold impact-italic">Counterpoint</div>
+      <div class="text-xs text-gray-300">Consense — AI Against Autocracy</div>
+    </div>
+    <div class="text-xs font-mono uppercase tracking-widest text-gray-300">no ranking · no scoring</div>
+  </div>
+</header>
+
+<main class="container mx-auto px-6 py-10 max-w-6xl">
+
+  <div class="bg-white border border-gray-400 rounded-lg shadow p-6 md:p-8">
+    <div class="flex flex-wrap gap-x-6 gap-y-1 text-xs font-mono text-gray-500 mb-4">
+      <span>prompt_id: {{ prompt_id }}</span>
+      <span>editor: {{ editor or "—" }}</span>
+      <span>run started: {{ run_started_at }}</span>
+    </div>
+    <div class="text-lg md:text-xl font-medium leading-snug text-gray-900">{{ prompt_text }}</div>
+  </div>
+
+  <!-- the spine: one shared line dropping into N equal columns, same
+       length and weight into every column - no column is emphasized,
+       matching the "we don't rank" principle. -->
+  <div class="hidden md:flex justify-around border-t border-gray-400 h-7 mx-2">
+    {% for r in results %}<span class="w-px h-full bg-gray-400"></span>{% endfor %}
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-{{ num_columns }} gap-5">
+    {% for r in results %}
+    <div class="bg-white border border-gray-400 rounded-lg shadow p-5 flex flex-col min-h-[220px]">
+      <div class="text-xs font-mono text-gray-500 border-b border-gray-300 pb-2 mb-3">
+        <span class="block font-sans font-bold text-gray-900 text-base mb-0.5">{{ r.provider }}</span>
+        <span>{{ r.model or "—" }}</span>
+        <span class="{% if r.status == 'ok' %}text-gray-700{% else %}text-gray-400 italic{% endif %}">
+          &nbsp;·&nbsp;{{ r.status }}
+        </span>
+        <div class="mt-2 flex flex-wrap gap-1.5">
+          {% if r.search_capable %}
+            <span class="inline-block bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full text-[11px]">
+              live search: {% if r.search_used == true %}yes{% elif r.search_used == false %}no{% else %}unknown{% endif %}
+            </span>
+          {% else %}
+            <span class="inline-block bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full text-[11px]">
+              no live search capability
+            </span>
+          {% endif %}
+          <span class="inline-block bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full text-[11px]">
+            cutoff: {{ r.knowledge_cutoff or "not confirmed" }}
+          </span>
+        </div>
+        <div class="mt-2 text-gray-400">{{ r.retrieved_at }}</div>
+      </div>
+      {% if r.status == "ok" %}
+        <div class="text-sm text-gray-800 whitespace-pre-wrap flex-1">{{ r.response }}</div>
+      {% elif r.status == "skipped_no_key" %}
+        <div class="text-sm text-gray-400 italic">No API key configured for this provider yet.</div>
+      {% else %}
+        <div class="text-sm text-gray-400 italic">Request failed: {{ r.error }}</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if framing_analysis %}
+  <div class="mt-8 bg-white border border-gray-400 rounded-lg shadow p-6 md:p-8">
+    <div class="flex items-baseline justify-between flex-wrap gap-2 mb-1">
+      <h2 class="text-lg font-semibold text-gray-900">How the responses differ</h2>
+      <span class="text-xs font-mono text-gray-500">
+        analysis by {{ framing_analysis.analyzer_provider }} ({{ framing_analysis.analyzer_model }}) · {{ framing_analysis.generated_at }}
+      </span>
+    </div>
+    <p class="text-xs text-gray-500 mb-6 italic">
+      Describes differences only — not a ranking or a judgment of which response is more accurate.
+    </p>
+    <div class="space-y-5">
+      <div>
+        <h3 class="text-xs font-mono uppercase tracking-wide text-gray-500 mb-1">What's known</h3>
+        <p class="text-sm text-gray-800 leading-relaxed">{{ framing_analysis.knowledge_differences }}</p>
+      </div>
+      <div>
+        <h3 class="text-xs font-mono uppercase tracking-wide text-gray-500 mb-1">Framing &amp; emphasis</h3>
+        <p class="text-sm text-gray-800 leading-relaxed">{{ framing_analysis.framing_differences }}</p>
+      </div>
+      <div>
+        <h3 class="text-xs font-mono uppercase tracking-wide text-gray-500 mb-1">Confidence &amp; hedging</h3>
+        <p class="text-sm text-gray-800 leading-relaxed">{{ framing_analysis.confidence_differences }}</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</main>
+
+<footer class="bg-gray-900 text-white text-xs font-mono py-6 mt-12">
+  <div class="container mx-auto px-6">
+    Prompts, model versions, and retrieval timestamps are published in full so results can be independently checked.
+  </div>
+</footer>
+
+</body>
+</html>
