@@ -66,7 +66,9 @@ def build_index():
 <header class="bg-gray-800 text-white py-4">
   <div class="container mx-auto px-6">
     <div class="text-2xl font-bold impact-italic">Counterpoint</div>
-    <div class="text-xs text-gray-300">Consense — AI Against Autocracy</div>
+    <div class="text-xs text-gray-300">
+      <a href="https://consenseai.org" class="hover:text-white">Consense — AI Against Autocracy</a>
+    </div>
   </div>
 </header>
 <main class="container mx-auto px-6 py-10 max-w-3xl">

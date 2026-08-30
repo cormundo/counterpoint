@@ -59,6 +59,20 @@ python render_results.py results/<your-prompt>.json    # build the HTML page
 Open `docs/<your-prompt>.html`, or `docs/index.html` for the full list.
 Commit + push to publish to the live site.
 
+**Or skip hand-writing a prompt file** — run the local story feed
+instead:
+
+```bash
+python feed_tool.py
+```
+
+Open http://127.0.0.1:5050. Browse real headlines (left) next to
+comparisons already generated (right) for free; clicking a headline
+shows a free, template-generated prompt; only clicking **Generate
+comparison** runs the pipeline above and spends real API credit — with
+a confirmation prompt first. This is **local-only, not on the public
+site** — see "Why the feed is local-only" below.
+
 ---
 
 ## What's here
@@ -67,11 +81,24 @@ Commit + push to publish to the live site.
 |---|---|
 | `prompts/*.yaml` | One editor-written prompt per file (`YYYY-MM-DD_slug.yaml`). This *is* the versioning — every comparison traces to one git-tracked file. |
 | `config/models.yaml` | Model IDs + freshness metadata per provider. Edit this, not the Python, when a provider ships a new model. |
+| `config/feeds.yaml` | RSS sources for `feed_tool.py`. Add/remove outlets freely. |
 | `query_models.py` | Queries all five providers, writes `results/<id>.json`. Handles missing keys, retries, and search-tool fallback gracefully. |
 | `analyze_framing.py` | *Optional* second pass — adds a non-ranking `framing_analysis` block describing how responses diverge. |
 | `render_results.py` + `templates/result.html` | Renders a results JSON into the styled comparison page in `docs/`. |
+| `feed_tool.py` + `templates/feed.html` | Local-only tool: browse an RSS feed, turn a headline into a comparison in two clicks. |
 | `results/*.json` | The reproducible record — one file per run. |
 | `docs/` | Generated static site (named `docs/`, not `site/`, so GitHub Pages can serve it directly). |
+
+### Why the feed is local-only
+
+GitHub Pages is static hosting — it can't run Python or call paid APIs
+when a visitor clicks something. A public "click to spend money"
+button with no rate limiting would be a real cost/abuse risk for a
+volunteer-funded nonprofit. So `feed_tool.py` is a small Flask app you
+run on your own machine, using your own `.env` keys; it writes into
+the same `prompts/`/`results/`/`docs/` files the rest of the pipeline
+already uses. Review what it generated, then commit + push the ones
+you want published, same as any other comparison.
 
 ---
 

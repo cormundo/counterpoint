@@ -195,21 +195,30 @@ removes the human accountability the `editor:` field currently
 represents. It also opens a manipulation surface: a bad actor gaming a
 trending-topics feed could seed adversarial prompts.
 
-**Recommended shape, not yet built:** a `fetch_candidates.py` script
-that pulls headlines from a diverse set of sources and writes them as
-*draft* prompt files (e.g. to `prompts/_drafts/`) — never straight into
-the published `prompts/` directory. A human still writes the final
-prompt wording and claims editorial credit before a comparison runs.
-This keeps the feed as a triage/discovery aid, not a replacement for
-editorial judgment. Bias toward stories where framing plausibly
-diverges (contested political events, authoritarian-adjacent stories,
-cross-border disputes) rather than pure "trending" — that's closer to
-the org's actual mission than a generic news firehose.
+**A v1 is now built: `feed_tool.py`.** A local-only tool (not on the
+public site — see its docstring and README for why: a public "click to
+spend money" button with no rate limiting is a real cost/abuse risk)
+that shows RSS headlines from `config/feeds.yaml` next to comparisons
+already generated. Clicking a headline reveals a **free, template-only
+prompt** ("Summarize what happened regarding '{headline}'...") — no LLM
+call involved in generating it, so browsing costs nothing. Only
+clicking "Generate comparison" (behind a confirm dialog) writes a real
+`prompts/*.yaml` file and runs the paid pipeline. This resolves the
+human-accountability half of the tension above: nothing is auto-
+published, every comparison still traces to one deliberate click by a
+named person on their own machine, using their own keys.
 
-If this works well, the natural extension is a scheduled job (e.g. a
-GitHub Actions cron) that re-runs approved/recurring prompts on a
-cadence — but that needs the run-history fix above first, and a hard
-spend cap (see 4.4) before it's safe to leave unattended.
+Still open: source diversity is presently just three outlets (BBC, Al
+Jazeera, NPR World, see `config/feeds.yaml`) with no bias toward
+"stories where framing plausibly diverges" as discussed above — it's
+closer to a generic firehose than the curated, mission-aligned feed
+described here. Worth a real editorial pass on source/story selection,
+not just adding more outlets. If this works well, the natural extension
+is a scheduled job (e.g. a GitHub Actions cron) that re-runs
+approved/recurring prompts on a cadence — but that needs the run-
+history fix above first, and a hard spend cap (see 4.4) before it's
+safe to leave unattended, and is a bigger step: it would mean this stops
+being local-only and someone has to own the ongoing cost.
 
 ### 4.3 Robustness
 

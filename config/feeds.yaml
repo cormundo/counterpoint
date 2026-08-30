@@ -1,0 +1,15 @@
+# RSS sources for the local story-browsing tool (feed_tool.py).
+#
+# Starter set of major, free, no-API-key-needed international outlets.
+# Add/remove/edit freely - this has nothing to do with which outlet's
+# framing is "correct," it's just where candidate headlines come from.
+# The tool never quotes or compares these outlets' own text - only the
+# headline is used, to build a generic prompt for the five AI models.
+
+feeds:
+  - name: BBC World
+    url: https://feeds.bbci.co.uk/news/world/rss.xml
+  - name: Al Jazeera
+    url: https://www.aljazeera.com/xml/rss/all.xml
+  - name: NPR World
+    url: https://feeds.npr.org/1004/rss.xml

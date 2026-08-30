@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Counterpoint — story feed (local)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .impact-italic { font-family: Impact, 'Arial Black', sans-serif; font-style: italic; letter-spacing: 0.02em; }
+</style>
+</head>
+<body class="bg-gray-200 font-sans text-gray-800">
+
+<header class="bg-gray-800 text-white py-4">
+  <div class="container mx-auto px-6 flex flex-wrap justify-between items-center gap-2">
+    <div>
+      <a href="/docs/index.html" class="text-2xl font-bold impact-italic hover:text-gray-300">Counterpoint</a>
+      <div class="text-xs text-gray-300">
+        <a href="https://consenseai.org" class="hover:text-white">Consense — AI Against Autocracy</a>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 text-xs font-mono uppercase tracking-widest text-gray-300">
+      <a href="/docs/index.html" class="hover:text-white">all comparisons</a>
+      <span>story feed (local only)</span>
+    </div>
+  </div>
+</header>
+
+<main class="container mx-auto px-6 py-10 max-w-6xl">
+  <p class="text-xs text-gray-500 mb-8 max-w-2xl">
+    Browsing this feed costs nothing. Clicking a headline shows a free, template-generated
+    prompt — nothing runs until you click <span class="font-semibold">Generate comparison</span>,
+    which is the only action that spends real API money.
+  </p>
+
+  <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8">
+
+    <section>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Headlines</h2>
+      <div id="feed-status" class="text-sm text-gray-500 italic">Loading feed…</div>
+      <ul id="feed-list" class="space-y-3"></ul>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Generated comparisons</h2>
+      <div id="comparisons-status" class="text-sm text-gray-500 italic">Loading…</div>
+      <ul id="comparisons-list" class="space-y-2"></ul>
+    </section>
+
+  </div>
+</main>
+
+<footer class="bg-gray-900 text-white text-xs font-mono py-6 mt-12">
+  <div class="container mx-auto px-6">
+    Local tool — nothing here is published until you commit + push the generated files.
+  </div>
+</footer>
+
+<script>
+async function loadFeed() {
+  const status = document.getElementById('feed-status');
+  const list = document.getElementById('feed-list');
+  try {
+    const res = await fetch('/api/feed');
+    const data = await res.json();
+    status.remove();
+    if (!data.items.length) {
+      list.innerHTML = '<li class="text-sm text-gray-500 italic">No headlines found.</li>';
+      return;
+    }
+    for (const item of data.items) {
+      list.appendChild(renderItem(item));
+    }
+  } catch (e) {
+    status.textContent = 'Could not load feed: ' + e;
+  }
+}
+
+function renderItem(item) {
+  const li = document.createElement('li');
+  li.className = 'bg-white border border-gray-400 rounded-lg shadow p-4';
+
+  const head = document.createElement('button');
+  head.className = 'text-left w-full';
+  head.innerHTML = `
+    <div class="font-medium text-gray-900">${escapeHtml(item.title)}</div>
+    <div class="text-xs font-mono text-gray-500 mt-1">${escapeHtml(item.source)}${item.published ? ' · ' + escapeHtml(item.published) : ''}</div>
+  `;
+
+  const panel = document.createElement('div');
+  panel.className = 'hidden mt-3 pt-3 border-t border-gray-300';
+  panel.innerHTML = `
+    <div class="text-xs font-mono uppercase tracking-wide text-gray-500 mb-1">Prompt (free preview)</div>
+    <div class="text-sm text-gray-800 mb-3">${escapeHtml(item.prompt_text)}</div>
+  `;
+
+  const actionArea = document.createElement('div');
+  panel.appendChild(actionArea);
+
+  if (item.already_generated) {
+    actionArea.innerHTML = `<a href="/docs/${item.id}.html" class="inline-block bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded">View comparison →</a>`;
+  } else {
+    const btn = document.createElement('button');
+    btn.className = 'bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded';
+    btn.textContent = 'Generate comparison (spends API credit)';
+    btn.onclick = async () => {
+      if (!confirm(`Generate a comparison for "${item.title}"?\n\nThis calls all 5 provider APIs and spends real API credit.`)) {
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Generating… this can take a minute';
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: item.id, title: item.title, prompt_text: item.prompt_text }),
+        });
+        const data = await res.json();
+        if (data.status === 'ok' || data.status === 'already_exists') {
+          actionArea.innerHTML = `<a href="/docs/${data.id}.html" class="inline-block bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded">View comparison →</a>`;
+          loadComparisons();
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Failed — try again';
+        }
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Failed — try again';
+      }
+    };
+    actionArea.appendChild(btn);
+  }
+
+  head.onclick = () => panel.classList.toggle('hidden');
+  li.appendChild(head);
+  li.appendChild(panel);
+  return li;
+}
+
+async function loadComparisons() {
+  const status = document.getElementById('comparisons-status');
+  const list = document.getElementById('comparisons-list');
+  list.innerHTML = '';
+  try {
+    const res = await fetch('/api/comparisons');
+    const data = await res.json();
+    if (!data.comparisons.length) {
+      status.textContent = 'None yet.';
+      return;
+    }
+    status.remove();
+    for (const id of data.comparisons) {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="/docs/${id}.html" class="block bg-white border border-gray-400 rounded-lg shadow p-3 hover:bg-gray-100 text-sm font-mono text-gray-800">${id}</a>`;
+      list.appendChild(li);
+    }
+  } catch (e) {
+    status.textContent = 'Could not load comparisons: ' + e;
+  }
+}
+
+function escapeHtml(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+loadFeed();
+loadComparisons();
+</script>
+
+</body>
+</html>
