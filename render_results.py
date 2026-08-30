@@ -43,7 +43,7 @@ def render(results_file: Path) -> Path:
 def build_index():
     """List all rendered pages in a simple index."""
     pages = sorted(SITE_DIR.glob("*.html"), reverse=True)
-    pages = [p for p in pages if p.name != "index.html"]
+    pages = [p for p in pages if p.name not in ("index.html", "feed.html")]
     links = "\n".join(
         f'<li><a href="{p.name}" class="block bg-white border border-gray-400 rounded-lg '
         f'shadow p-4 hover:bg-gray-100 transition-colors text-gray-800 font-mono text-sm">'
@@ -64,11 +64,14 @@ def build_index():
 </head>
 <body class="bg-gray-200 font-sans text-gray-800">
 <header class="bg-gray-800 text-white py-4">
-  <div class="container mx-auto px-6">
-    <div class="text-2xl font-bold impact-italic">Counterpoint</div>
-    <div class="text-xs text-gray-300">
-      <a href="https://consenseai.org" class="hover:text-white">Consense — AI Against Autocracy</a>
+  <div class="container mx-auto px-6 flex flex-wrap justify-between items-center gap-2">
+    <div>
+      <div class="text-2xl font-bold impact-italic">Counterpoint</div>
+      <div class="text-xs text-gray-300">
+        <a href="https://consenseai.org" class="hover:text-white">Consense — AI Against Autocracy</a>
+      </div>
     </div>
+    <a href="feed.html" class="text-xs font-mono uppercase tracking-widest text-gray-300 hover:text-white">story feed</a>
   </div>
 </header>
 <main class="container mx-auto px-6 py-10 max-w-3xl">

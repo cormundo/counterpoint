@@ -100,6 +100,20 @@ the same `prompts/`/`results/`/`docs/` files the rest of the pipeline
 already uses. Review what it generated, then commit + push the ones
 you want published, same as any other comparison.
 
+The public site still shows the feed, so your team can see what it
+looks like — `docs/feed.html` is a **static snapshot**: real headlines
+frozen at generation time, the prompt preview still works (it's just
+text, no server needed), but "Generate comparison" is disabled with a
+note pointing at running it locally. Refresh that snapshot with:
+
+```bash
+python feed_tool.py --build-static
+```
+
+then commit + push `docs/feed.html` like anything else. It won't
+update itself — re-run this whenever you want the public preview to
+show newer headlines.
+
 ---
 
 ## Design notes

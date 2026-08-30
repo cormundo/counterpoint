@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Counterpoint — story feed (preview)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .impact-italic { font-family: Impact, 'Arial Black', sans-serif; font-style: italic; letter-spacing: 0.02em; }
+</style>
+</head>
+<body class="bg-gray-200 font-sans text-gray-800">
+
+<header class="bg-gray-800 text-white py-4">
+  <div class="container mx-auto px-6 flex flex-wrap justify-between items-center gap-2">
+    <div>
+      <a href="index.html" class="text-2xl font-bold impact-italic hover:text-gray-300">Counterpoint</a>
+      <div class="text-xs text-gray-300">
+        <a href="https://consenseai.org" class="hover:text-white">Consense — AI Against Autocracy</a>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 text-xs font-mono uppercase tracking-widest text-gray-300">
+      <a href="index.html" class="hover:text-white">all comparisons</a>
+      <span>story feed (preview)</span>
+    </div>
+  </div>
+</header>
+
+<main class="container mx-auto px-6 py-10 max-w-6xl">
+
+  
+  <div class="bg-white border border-gray-400 rounded-lg shadow p-5 mb-8 max-w-3xl">
+    <p class="text-sm text-gray-800">
+      <span class="font-semibold">This is a preview, not a live feed.</span>
+      The headlines below were real when this page was last generated. Browsing
+      and the prompt preview work the same as the real tool — clicking a
+      headline costs nothing. <span class="font-semibold">Generating a new
+      comparison only works when running this tool on your own machine</span>
+      (<code class="bg-gray-100 px-1 rounded">python feed_tool.py</code>), not
+      here on the public site — a public "click to spend API credit" button
+      with no rate limiting would be a real cost risk. See the repo README for
+      why, and to run it yourself.
+    </p>
+  </div>
+  
+
+  <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8">
+
+    <section>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Headlines</h2>
+      <div id="feed-status" class="text-sm text-gray-500 italic">Loading feed…</div>
+      <ul id="feed-list" class="space-y-3"></ul>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Generated comparisons</h2>
+      <div id="comparisons-status" class="text-sm text-gray-500 italic">Loading…</div>
+      <ul id="comparisons-list" class="space-y-2"></ul>
+    </section>
+
+  </div>
+</main>
+
+<footer class="bg-gray-900 text-white text-xs font-mono py-6 mt-12">
+  <div class="container mx-auto px-6">
+    
+      Static preview, generated 2026-08-30T03:11:55.738866+00:00 — not live. Nothing here changes until someone re-runs and re-publishes it.
+    
+  </div>
+</footer>
+
+<script id="feed-data" type="application/json">[{"id": "2026-08-30_footage-of-tibet-floods-isn-t-being-shown-in-china-and-we-kn", "title": "Footage of Tibet floods isn't being shown in China - and we know little about victims there", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cx2z415w2gpo?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 03:54:11 GMT", "prompt_text": "Summarize what happened regarding \"Footage of Tibet floods isn't being shown in China - and we know little about victims there\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_at-least-37-dead-and-hundreds-evacuated-after-strike-on-kyiv", "title": "At least 37 dead and hundreds evacuated after strike on Kyiv weapons depot", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/c86xwqez4npo?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 20:13:16 GMT", "prompt_text": "Summarize what happened regarding \"At least 37 dead and hundreds evacuated after strike on Kyiv weapons depot\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_right-wing-commentator-milo-yiannopoulos-deported-from-us-to", "title": "Right-wing commentator Milo Yiannopoulos deported from US to UK", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cqlw52vr0dwo?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 17:52:42 GMT", "prompt_text": "Summarize what happened regarding \"Right-wing commentator Milo Yiannopoulos deported from US to UK\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_canada-installs-large-lake-ontario-sign-in-latest-jab-at-us", "title": "Canada installs large Lake Ontario sign in latest jab at US", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cpq09594vw7o?at_medium=RSS&at_campaign=rss", "published": "Sun, 30 Aug 2026 00:17:25 GMT", "prompt_text": "Summarize what happened regarding \"Canada installs large Lake Ontario sign in latest jab at US\" and explain the current state of the situation as of today.", "already_generated": true}, {"id": "2026-08-30_norway-s-new-king-remembers-my-dear-father-in-first-speech", "title": "Norway's new king remembers 'my dear father' in first speech", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cvgy79wmv4jo?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 19:06:28 GMT", "prompt_text": "Summarize what happened regarding \"Norway's new king remembers 'my dear father' in first speech\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_former-ecuadorian-president-imprisoned-for-corruption", "title": "Former Ecuadorian president imprisoned for corruption", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cvgym9rz07zo?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 19:44:54 GMT", "prompt_text": "Summarize what happened regarding \"Former Ecuadorian president imprisoned for corruption\" and explain the current state of the situation as of today.", "already_generated": true}, {"id": "2026-08-30_landlady-to-9-11-hijackers-reveals-their-links-to-alleged-sa", "title": "Landlady to 9/11 hijackers reveals their links to alleged Saudi spy", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/c99dvm39mreo?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 00:32:17 GMT", "prompt_text": "Summarize what happened regarding \"Landlady to 9/11 hijackers reveals their links to alleged Saudi spy\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_close-race-as-iceland-votes-on-whether-to-restart-talks-on-j", "title": "Close race as Iceland votes on whether to restart talks on joining EU", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cn45vdxyvvlo?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 00:56:19 GMT", "prompt_text": "Summarize what happened regarding \"Close race as Iceland votes on whether to restart talks on joining EU\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_trump-hails-historic-deal-for-us-to-control-65bn-barrels-of", "title": "Trump hails 'historic' deal for US to control 65bn barrels of Venezuela's oil", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cx2zlwe7qj1o?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 22:40:51 GMT", "prompt_text": "Summarize what happened regarding \"Trump hails 'historic' deal for US to control 65bn barrels of Venezuela's oil\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_ex-white-house-teleprompter-operator-ordered-to-pay-172-000", "title": "Ex-White House teleprompter operator ordered to pay $172,000 for Trump speech bets", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/c4gj2dl4x52o?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 07:11:04 GMT", "prompt_text": "Summarize what happened regarding \"Ex-White House teleprompter operator ordered to pay $172,000 for Trump speech bets\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_dutch-health-institute-issues-red-alert-over-trump-shaped-ec", "title": "Dutch health institute issues 'red alert' over Trump-shaped ecstasy pills", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cy8z9084d00o?at_medium=RSS&at_campaign=rss", "published": "Sat, 29 Aug 2026 08:48:34 GMT", "prompt_text": "Summarize what happened regarding \"Dutch health institute issues 'red alert' over Trump-shaped ecstasy pills\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_oslo-mayor-calls-off-wedding-ceremony-after-death-of-norway", "title": "Oslo mayor calls off wedding ceremony after death of Norway's king", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/c5ydgk3v60eo?at_medium=RSS&at_campaign=rss", "published": "Fri, 28 Aug 2026 13:50:34 GMT", "prompt_text": "Summarize what happened regarding \"Oslo mayor calls off wedding ceremony after death of Norway's king\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_russia-ramps-up-rhetoric-but-wants-to-avoid-war-with-nato-we", "title": "Russia ramps up rhetoric but wants to avoid war with Nato, Western officials say", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cz0zm2j7ld1o?at_medium=RSS&at_campaign=rss", "published": "Fri, 28 Aug 2026 19:05:23 GMT", "prompt_text": "Summarize what happened regarding \"Russia ramps up rhetoric but wants to avoid war with Nato, Western officials say\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_canada-poaches-dozens-of-top-us-researchers-for-its-universi", "title": "Canada poaches dozens of top US researchers for its universities", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/c209gd5jnq1o?at_medium=RSS&at_campaign=rss", "published": "Fri, 28 Aug 2026 23:47:38 GMT", "prompt_text": "Summarize what happened regarding \"Canada poaches dozens of top US researchers for its universities\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_berlin-is-being-blackmailed-by-hackers-mayor-says", "title": "Berlin is being blackmailed by hackers, mayor says", "source": "BBC World", "link": "https://www.bbc.co.uk/news/articles/cm2q7gv3l5qo?at_medium=RSS&at_campaign=rss", "published": "Fri, 28 Aug 2026 21:29:01 GMT", "prompt_text": "Summarize what happened regarding \"Berlin is being blackmailed by hackers, mayor says\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_bullet-riddled-car-on-display-in-berlin-to-remember-hind-raj", "title": "Bullet-riddled car on display in Berlin to remember Hind Rajab", "source": "Al Jazeera", "link": "https://www.aljazeera.com/video/newsfeed/2026/8/30/bullet-riddled-car-on-display-in-berlin-to-remember-hind-rajab?traffic_source=rss", "published": "Sun, 30 Aug 2026 01:43:52 +0000", "prompt_text": "Summarize what happened regarding \"Bullet-riddled car on display in Berlin to remember Hind Rajab\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_isolated-by-raging-floodwaters-nepal-s-miracle-home-amid-the", "title": "Isolated by raging floodwaters, Nepal\u2019s miracle home amid the devastation", "source": "Al Jazeera", "link": "https://www.aljazeera.com/video/newsfeed/2026/8/30/isolated-by-raging-floodwaters-nepals-miracle-home-amid-the-devastation?traffic_source=rss", "published": "Sun, 30 Aug 2026 01:35:27 +0000", "prompt_text": "Summarize what happened regarding \"Isolated by raging floodwaters, Nepal\u2019s miracle home amid the devastation\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_turkiye-somalia-forces-free-cargo-vessel-hijacked-by-pirates", "title": "Turkiye, Somalia forces free cargo vessel hijacked by pirates", "source": "Al Jazeera", "link": "https://www.aljazeera.com/news/2026/8/30/turkiye-somalia-forces-frees-cargo-vessel-hijacked-by-pirates?traffic_source=rss", "published": "Sun, 30 Aug 2026 00:16:58 +0000", "prompt_text": "Summarize what happened regarding \"Turkiye, Somalia forces free cargo vessel hijacked by pirates\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_online-anti-muslim-backlash-collides-with-different-reality", "title": "Online anti-Muslim backlash collides with different reality in South Africa", "source": "Al Jazeera", "link": "https://www.aljazeera.com/news/2026/8/30/online-anti-muslim-backlash-collides-with-different-reality-in-south-africa?traffic_source=rss", "published": "Sun, 30 Aug 2026 00:06:30 +0000", "prompt_text": "Summarize what happened regarding \"Online anti-Muslim backlash collides with different reality in South Africa\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_iran-war-live-tehran-in-no-rush-to-reopen-hormuz-settlers-be", "title": "Iran war live: Tehran in no rush to reopen Hormuz; settlers besiege Qusra", "source": "Al Jazeera", "link": "https://www.aljazeera.com/news/liveblog/2026/8/30/iran-war-live-iran-pledges-to-stand-firm-against-unjust-us-sanctions?traffic_source=rss", "published": "Sun, 30 Aug 2026 00:00:00 +0000", "prompt_text": "Summarize what happened regarding \"Iran war live: Tehran in no rush to reopen Hormuz; settlers besiege Qusra\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_israeli-settlers-attack-international-news-team-in-occupied", "title": "Israeli settlers attack international news team in occupied West Bank", "source": "Al Jazeera", "link": "https://www.aljazeera.com/video/newsfeed/2026/8/29/israeli-settlers-attack-international-news-team-in-occupied-west-bank?traffic_source=rss", "published": "Sat, 29 Aug 2026 23:48:22 +0000", "prompt_text": "Summarize what happened regarding \"Israeli settlers attack international news team in occupied West Bank\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_spectacular-fireworks-over-damascus-as-syria-shines-again", "title": "Spectacular fireworks over Damascus as \u2018Syria Shines Again\u2019", "source": "Al Jazeera", "link": "https://www.aljazeera.com/video/newsfeed/2026/8/29/spectacular-fireworks-over-damascus-as-syria-shines?traffic_source=rss", "published": "Sat, 29 Aug 2026 23:34:11 +0000", "prompt_text": "Summarize what happened regarding \"Spectacular fireworks over Damascus as \u2018Syria Shines Again\u2019\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_voting-closes-in-iceland-s-knife-edge-eu-referendum", "title": "Voting closes in Iceland\u2019s knife-edge EU referendum", "source": "Al Jazeera", "link": "https://www.aljazeera.com/news/2026/8/29/voting-closes-in-icelands-knife-edge-eu-referendum?traffic_source=rss", "published": "Sat, 29 Aug 2026 23:33:03 +0000", "prompt_text": "Summarize what happened regarding \"Voting closes in Iceland\u2019s knife-edge EU referendum\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_ukrainian-nuclear-power-plant-without-external-power-for-ove", "title": "Ukrainian nuclear power plant without external power for over a week", "source": "Al Jazeera", "link": "https://www.aljazeera.com/news/2026/8/29/ukrainian-nuclear-power-plant-without-external-power-for-over-a-week?traffic_source=rss", "published": "Sat, 29 Aug 2026 23:25:07 +0000", "prompt_text": "Summarize what happened regarding \"Ukrainian nuclear power plant without external power for over a week\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_ontario-s-doug-ford-prods-trump-with-sign-rejecting-lake-ame", "title": "Ontario\u2019s Doug Ford prods Trump with sign rejecting \u2018Lake America\u2019 name", "source": "Al Jazeera", "link": "https://www.aljazeera.com/news/2026/8/29/ontarios-doug-ford-prods-trump-with-sign-rejecting-lake-america-name?traffic_source=rss", "published": "Sat, 29 Aug 2026 22:50:27 +0000", "prompt_text": "Summarize what happened regarding \"Ontario\u2019s Doug Ford prods Trump with sign rejecting \u2018Lake America\u2019 name\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_what-s-behind-the-us-deal-to-seize-control-of-venezuelan-oil", "title": "What\u2019s behind the US deal to seize control of Venezuelan oil reserves?", "source": "Al Jazeera", "link": "https://www.aljazeera.com/news/2026/8/29/whats-behind-the-us-deal-to-seize-control-of-venezuelan-oil-reserves?traffic_source=rss", "published": "Sat, 29 Aug 2026 22:33:01 +0000", "prompt_text": "Summarize what happened regarding \"What\u2019s behind the US deal to seize control of Venezuelan oil reserves?\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_anger-mounts-in-nepal-over-the-government-s-response-to-flas", "title": "Anger mounts in Nepal over the government\u2019s response to flash flood", "source": "Al Jazeera", "link": "https://www.aljazeera.com/video/newsfeed/2026/8/29/anger-mounts-in-nepal-over-the-governments-response-to-flash-flood?traffic_source=rss", "published": "Sat, 29 Aug 2026 20:58:25 +0000", "prompt_text": "Summarize what happened regarding \"Anger mounts in Nepal over the government\u2019s response to flash flood\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_iceland-votes-in-a-tight-race-on-whether-to-resume-talks-to", "title": "Iceland votes in a tight race on whether to resume talks to join the EU", "source": "Al Jazeera", "link": "https://www.aljazeera.com/video/newsfeed/2026/8/29/iceland-votes-in-a-tight-race-on-whether-to-resume-talks-to-join-the-eu?traffic_source=rss", "published": "Sat, 29 Aug 2026 20:36:49 +0000", "prompt_text": "Summarize what happened regarding \"Iceland votes in a tight race on whether to resume talks to join the EU\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_norway-s-new-king-pays-tribute-to-his-late-father-as-the-cou", "title": "Norway\u2019s new king pays tribute to his late father as the country mourns", "source": "Al Jazeera", "link": "https://www.aljazeera.com/news/2026/8/29/norways-new-king-pays-tribute-to-his-late-father-as-the-country-mourns?traffic_source=rss", "published": "Sat, 29 Aug 2026 20:32:02 +0000", "prompt_text": "Summarize what happened regarding \"Norway\u2019s new king pays tribute to his late father as the country mourns\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_gaza-runs-out-of-cancer-medicines-as-israeli-strikes-continu", "title": "Gaza runs out of cancer medicines, as Israeli strikes continue", "source": "Al Jazeera", "link": "https://www.aljazeera.com/video/newsfeed/2026/8/29/29-08-sv-gaza-hospitals-targetting-fm?traffic_source=rss", "published": "Sat, 29 Aug 2026 20:07:47 +0000", "prompt_text": "Summarize what happened regarding \"Gaza runs out of cancer medicines, as Israeli strikes continue\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_icelanders-vote-on-whether-they-want-to-join-the-eu", "title": "Icelanders vote on whether they want to join the EU", "source": "NPR World", "link": "https://www.npr.org/2026/08/29/nx-s1-5948759/iceland-european-union-referendum-vote", "published": "Sat, 29 Aug 2026 21:47:44 -0400", "prompt_text": "Summarize what happened regarding \"Icelanders vote on whether they want to join the EU\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_getting-help-to-nepal-s-flood-survivors-is-proving-difficult", "title": "Getting help to Nepal's flood survivors is proving difficult", "source": "NPR World", "link": "https://www.npr.org/2026/08/29/nx-s1-5948125/getting-help-to-nepals-flood-survivors-is-proving-difficult", "published": "Sat, 29 Aug 2026 17:14:10 -0400", "prompt_text": "Summarize what happened regarding \"Getting help to Nepal's flood survivors is proving difficult\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_rescuers-race-to-find-thousands-missing-after-deadly-himalay", "title": "Rescuers race to find thousands missing after deadly Himalayan floods", "source": "NPR World", "link": "https://www.npr.org/2026/08/29/nx-s1-5948040/rescuers-race-to-find-thousands-missing-after-deadly-himalayan-floods", "published": "Sat, 29 Aug 2026 17:14:09 -0400", "prompt_text": "Summarize what happened regarding \"Rescuers race to find thousands missing after deadly Himalayan floods\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_russian-strike-near-kyiv-kills-37-in-one-of-the-year-s-deadl", "title": "Russian strike near Kyiv kills 37, in one of the year's deadliest attacks", "source": "NPR World", "link": "https://www.npr.org/2026/08/29/nx-s1-5948714/russian-strike-kyiv", "published": "Sat, 29 Aug 2026 11:54:40 -0400", "prompt_text": "Summarize what happened regarding \"Russian strike near Kyiv kills 37, in one of the year's deadliest attacks\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_photos-see-the-aftermath-of-deadly-flash-floods-in-nepal", "title": "Photos: See the aftermath of deadly flash floods in Nepal", "source": "NPR World", "link": "https://www.npr.org/2026/08/29/nx-s1-5948209/photos-see-the-aftermath-of-deadly-flash-floods-in-nepal", "published": "Sat, 29 Aug 2026 10:22:19 -0400", "prompt_text": "Summarize what happened regarding \"Photos: See the aftermath of deadly flash floods in Nepal\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_srebrenica-survivor-ahmed-hrustanovic-reflects-on-ratko-mlad", "title": "Srebrenica survivor Ahmed Hrustanovic reflects on Ratko Mladic's death", "source": "NPR World", "link": "https://www.npr.org/2026/08/29/nx-s1-5947879/srebrenica-survivor-ahmed-hrustanovic-reflects-on-ratko-mladics-death", "published": "Sat, 29 Aug 2026 07:40:57 -0400", "prompt_text": "Summarize what happened regarding \"Srebrenica survivor Ahmed Hrustanovic reflects on Ratko Mladic's death\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_trump-says-u-s-has-entered-deal-with-venezuela-to-take-contr", "title": "Trump says U.S. has entered deal with Venezuela to take control of 65 billion barrels of oil reserves", "source": "NPR World", "link": "https://www.npr.org/2026/08/28/nx-s1-5948229/trump-says-u-s-has-entered-deal-with-venezuela-to-take-control-of-65-billion-barrels-of-oil-reserves", "published": "Fri, 28 Aug 2026 22:07:55 -0400", "prompt_text": "Summarize what happened regarding \"Trump says U.S. has entered deal with Venezuela to take control of 65 billion barrels of oil reserves\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_after-6-months-of-war-iran-s-battered-regime-remains-entrenc", "title": "After 6 months of war, Iran's battered regime remains entrenched", "source": "NPR World", "link": "https://www.npr.org/2026/08/28/nx-s1-5947854/us-iran-war", "published": "Fri, 28 Aug 2026 15:35:24 -0400", "prompt_text": "Summarize what happened regarding \"After 6 months of war, Iran's battered regime remains entrenched\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_experts-warn-more-flooding-might-hit-nepal-and-fed-chairman", "title": "Experts warn more flooding might hit Nepal. And, Fed chairman to give key address", "source": "NPR World", "link": "https://www.npr.org/2026/08/28/g-s1-140866/up-first-newsletter-nepal-tibet-floods-kevin-warsh-kennedy-center", "published": "Fri, 28 Aug 2026 07:01:11 -0400", "prompt_text": "Summarize what happened regarding \"Experts warn more flooding might hit Nepal. And, Fed chairman to give key address\" and explain the current state of the situation as of today.", "already_generated": false}, {"id": "2026-08-30_hundreds-killed-over-1-000-missing-after-flash-floods-in-nep", "title": "Hundreds killed, over 1,000 missing after flash floods in Nepal and Tibet", "source": "NPR World", "link": "https://www.npr.org/2026/08/28/nx-s1-5946732/hundreds-killed-over-1-000-missing-after-flash-floods-in-nepal-and-tibet", "published": "Fri, 28 Aug 2026 06:56:17 -0400", "prompt_text": "Summarize what happened regarding \"Hundreds killed, over 1,000 missing after flash floods in Nepal and Tibet\" and explain the current state of the situation as of today.", "already_generated": false}]</script>
+<script id="comparisons-data" type="application/json">["2026-08-30_former-ecuadorian-president-imprisoned-for-corruption", "2026-08-30_canada-installs-large-lake-ontario-sign-in-latest-jab-at-us", "2026-08-29_turkey-manifest-band-manager-arrest", "2026-08-29_nepal-glacial-flood", "2026-08-29_lake-america-ontario-renaming", "2026-08-29_example"]</script>
+
+<script>
+const STATIC_MODE = true;
+const LINK_PREFIX = "";
+
+async function loadFeed() {
+  const status = document.getElementById('feed-status');
+  const list = document.getElementById('feed-list');
+  try {
+    let items;
+    if (STATIC_MODE) {
+      items = JSON.parse(document.getElementById('feed-data').textContent);
+    } else {
+      const res = await fetch('/api/feed');
+      items = (await res.json()).items;
+    }
+    status.remove();
+    if (!items.length) {
+      list.innerHTML = '<li class="text-sm text-gray-500 italic">No headlines found.</li>';
+      return;
+    }
+    for (const item of items) {
+      list.appendChild(renderItem(item));
+    }
+  } catch (e) {
+    status.textContent = 'Could not load feed: ' + e;
+  }
+}
+
+function renderItem(item) {
+  const li = document.createElement('li');
+  li.className = 'bg-white border border-gray-400 rounded-lg shadow p-4';
+
+  const head = document.createElement('button');
+  head.className = 'text-left w-full';
+  head.innerHTML = `
+    <div class="font-medium text-gray-900">${escapeHtml(item.title)}</div>
+    <div class="text-xs font-mono text-gray-500 mt-1">${escapeHtml(item.source)}${item.published ? ' · ' + escapeHtml(item.published) : ''}</div>
+  `;
+
+  const panel = document.createElement('div');
+  panel.className = 'hidden mt-3 pt-3 border-t border-gray-300';
+  panel.innerHTML = `
+    <div class="text-xs font-mono uppercase tracking-wide text-gray-500 mb-1">Prompt (free preview)</div>
+    <div class="text-sm text-gray-800 mb-3">${escapeHtml(item.prompt_text)}</div>
+  `;
+
+  const actionArea = document.createElement('div');
+  panel.appendChild(actionArea);
+
+  if (item.already_generated) {
+    actionArea.innerHTML = `<a href="${LINK_PREFIX}${item.id}.html" class="inline-block bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded">View comparison →</a>`;
+  } else if (STATIC_MODE) {
+    actionArea.innerHTML = `
+      <button disabled class="bg-gray-300 text-gray-500 text-sm px-4 py-2 rounded cursor-not-allowed">Generate comparison</button>
+      <div class="text-xs text-gray-500 mt-2 italic">Only works when running this tool locally — see the repo README.</div>
+    `;
+  } else {
+    const btn = document.createElement('button');
+    btn.className = 'bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded';
+    btn.textContent = 'Generate comparison (spends API credit)';
+    btn.onclick = async () => {
+      if (!confirm(`Generate a comparison for "${item.title}"?\n\nThis calls all 5 provider APIs and spends real API credit.`)) {
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Generating… this can take a minute';
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: item.id, title: item.title, prompt_text: item.prompt_text }),
+        });
+        const data = await res.json();
+        if (data.status === 'ok' || data.status === 'already_exists') {
+          actionArea.innerHTML = `<a href="${LINK_PREFIX}${data.id}.html" class="inline-block bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded">View comparison →</a>`;
+          loadComparisons();
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Failed — try again';
+        }
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Failed — try again';
+      }
+    };
+    actionArea.appendChild(btn);
+  }
+
+  head.onclick = () => panel.classList.toggle('hidden');
+  li.appendChild(head);
+  li.appendChild(panel);
+  return li;
+}
+
+async function loadComparisons() {
+  const status = document.getElementById('comparisons-status');
+  const list = document.getElementById('comparisons-list');
+  list.innerHTML = '';
+  try {
+    let comparisons;
+    if (STATIC_MODE) {
+      comparisons = JSON.parse(document.getElementById('comparisons-data').textContent);
+    } else {
+      const res = await fetch('/api/comparisons');
+      comparisons = (await res.json()).comparisons;
+    }
+    if (!comparisons.length) {
+      status.textContent = 'None yet.';
+      return;
+    }
+    status.remove();
+    for (const id of comparisons) {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="${LINK_PREFIX}${id}.html" class="block bg-white border border-gray-400 rounded-lg shadow p-3 hover:bg-gray-100 text-sm font-mono text-gray-800">${id}</a>`;
+      list.appendChild(li);
+    }
+  } catch (e) {
+    status.textContent = 'Could not load comparisons: ' + e;
+  }
+}
+
+function escapeHtml(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+loadFeed();
+loadComparisons();
+</script>
+
+</body>
+</html>

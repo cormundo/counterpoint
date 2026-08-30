@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Counterpoint — story feed (local)</title>
+<title>Counterpoint — story feed{{ " (preview)" if static_mode else " (local)" }}</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   .impact-italic { font-family: Impact, 'Arial Black', sans-serif; font-style: italic; letter-spacing: 0.02em; }
@@ -14,24 +14,41 @@
 <header class="bg-gray-800 text-white py-4">
   <div class="container mx-auto px-6 flex flex-wrap justify-between items-center gap-2">
     <div>
-      <a href="/docs/index.html" class="text-2xl font-bold impact-italic hover:text-gray-300">Counterpoint</a>
+      <a href="{{ home_link }}" class="text-2xl font-bold impact-italic hover:text-gray-300">Counterpoint</a>
       <div class="text-xs text-gray-300">
         <a href="https://consenseai.org" class="hover:text-white">Consense — AI Against Autocracy</a>
       </div>
     </div>
     <div class="flex items-center gap-4 text-xs font-mono uppercase tracking-widest text-gray-300">
-      <a href="/docs/index.html" class="hover:text-white">all comparisons</a>
-      <span>story feed (local only)</span>
+      <a href="{{ home_link }}" class="hover:text-white">all comparisons</a>
+      <span>story feed{{ " (preview)" if static_mode else " (local only)" }}</span>
     </div>
   </div>
 </header>
 
 <main class="container mx-auto px-6 py-10 max-w-6xl">
+
+  {% if static_mode %}
+  <div class="bg-white border border-gray-400 rounded-lg shadow p-5 mb-8 max-w-3xl">
+    <p class="text-sm text-gray-800">
+      <span class="font-semibold">This is a preview, not a live feed.</span>
+      The headlines below were real when this page was last generated. Browsing
+      and the prompt preview work the same as the real tool — clicking a
+      headline costs nothing. <span class="font-semibold">Generating a new
+      comparison only works when running this tool on your own machine</span>
+      (<code class="bg-gray-100 px-1 rounded">python feed_tool.py</code>), not
+      here on the public site — a public "click to spend API credit" button
+      with no rate limiting would be a real cost risk. See the repo README for
+      why, and to run it yourself.
+    </p>
+  </div>
+  {% else %}
   <p class="text-xs text-gray-500 mb-8 max-w-2xl">
     Browsing this feed costs nothing. Clicking a headline shows a free, template-generated
     prompt — nothing runs until you click <span class="font-semibold">Generate comparison</span>,
     which is the only action that spends real API money.
   </p>
+  {% endif %}
 
   <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8">
 
@@ -52,23 +69,38 @@
 
 <footer class="bg-gray-900 text-white text-xs font-mono py-6 mt-12">
   <div class="container mx-auto px-6">
-    Local tool — nothing here is published until you commit + push the generated files.
+    {% if static_mode %}
+      Static preview, generated {{ generated_at }} — not live. Nothing here changes until someone re-runs and re-publishes it.
+    {% else %}
+      Local tool — nothing here is published until you commit + push the generated files.
+    {% endif %}
   </div>
 </footer>
 
+<script id="feed-data" type="application/json">{{ items_json | safe }}</script>
+<script id="comparisons-data" type="application/json">{{ comparisons_json | safe }}</script>
+
 <script>
+const STATIC_MODE = {{ "true" if static_mode else "false" }};
+const LINK_PREFIX = {{ link_prefix | tojson }};
+
 async function loadFeed() {
   const status = document.getElementById('feed-status');
   const list = document.getElementById('feed-list');
   try {
-    const res = await fetch('/api/feed');
-    const data = await res.json();
+    let items;
+    if (STATIC_MODE) {
+      items = JSON.parse(document.getElementById('feed-data').textContent);
+    } else {
+      const res = await fetch('/api/feed');
+      items = (await res.json()).items;
+    }
     status.remove();
-    if (!data.items.length) {
+    if (!items.length) {
       list.innerHTML = '<li class="text-sm text-gray-500 italic">No headlines found.</li>';
       return;
     }
-    for (const item of data.items) {
+    for (const item of items) {
       list.appendChild(renderItem(item));
     }
   } catch (e) {
@@ -98,7 +130,12 @@ function renderItem(item) {
   panel.appendChild(actionArea);
 
   if (item.already_generated) {
-    actionArea.innerHTML = `<a href="/docs/${item.id}.html" class="inline-block bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded">View comparison →</a>`;
+    actionArea.innerHTML = `<a href="${LINK_PREFIX}${item.id}.html" class="inline-block bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded">View comparison →</a>`;
+  } else if (STATIC_MODE) {
+    actionArea.innerHTML = `
+      <button disabled class="bg-gray-300 text-gray-500 text-sm px-4 py-2 rounded cursor-not-allowed">Generate comparison</button>
+      <div class="text-xs text-gray-500 mt-2 italic">Only works when running this tool locally — see the repo README.</div>
+    `;
   } else {
     const btn = document.createElement('button');
     btn.className = 'bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded';
@@ -117,7 +154,7 @@ function renderItem(item) {
         });
         const data = await res.json();
         if (data.status === 'ok' || data.status === 'already_exists') {
-          actionArea.innerHTML = `<a href="/docs/${data.id}.html" class="inline-block bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded">View comparison →</a>`;
+          actionArea.innerHTML = `<a href="${LINK_PREFIX}${data.id}.html" class="inline-block bg-gray-700 hover:bg-gray-600 text-white text-sm px-4 py-2 rounded">View comparison →</a>`;
           loadComparisons();
         } else {
           btn.disabled = false;
@@ -142,16 +179,21 @@ async function loadComparisons() {
   const list = document.getElementById('comparisons-list');
   list.innerHTML = '';
   try {
-    const res = await fetch('/api/comparisons');
-    const data = await res.json();
-    if (!data.comparisons.length) {
+    let comparisons;
+    if (STATIC_MODE) {
+      comparisons = JSON.parse(document.getElementById('comparisons-data').textContent);
+    } else {
+      const res = await fetch('/api/comparisons');
+      comparisons = (await res.json()).comparisons;
+    }
+    if (!comparisons.length) {
       status.textContent = 'None yet.';
       return;
     }
     status.remove();
-    for (const id of data.comparisons) {
+    for (const id of comparisons) {
       const li = document.createElement('li');
-      li.innerHTML = `<a href="/docs/${id}.html" class="block bg-white border border-gray-400 rounded-lg shadow p-3 hover:bg-gray-100 text-sm font-mono text-gray-800">${id}</a>`;
+      li.innerHTML = `<a href="${LINK_PREFIX}${id}.html" class="block bg-white border border-gray-400 rounded-lg shadow p-3 hover:bg-gray-100 text-sm font-mono text-gray-800">${id}</a>`;
       list.appendChild(li);
     }
   } catch (e) {
